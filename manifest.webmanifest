@@ -1,0 +1,11 @@
+{
+  "name": "Заказ продуктов — ВИАЙПИ РЕСТОБАР",
+  "short_name": "Заказ кухни",
+  "description": "Оформление заказов продуктов для кухни ВИАЙПИ РЕСТОБАР",
+  "lang": "ru",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#090a0b",
+  "theme_color": "#090a0b"
+}

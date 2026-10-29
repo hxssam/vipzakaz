@@ -1,0 +1,177 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#090a0b" />
+    <meta name="description" content="Быстрое оформление заказа продуктов для кухни ВИАЙПИ РЕСТОБАР." />
+    <link rel="manifest" href="manifest.webmanifest" />
+    <link rel="stylesheet" href="styles.css" />
+    <title>Заказ продуктов — ВИАЙПИ РЕСТОБАР</title>
+  </head>
+  <body>
+    <div class="app-shell">
+      <header class="topbar">
+        <div class="brand">
+          <div class="brand-copy">
+            <div class="eyebrow">СИСТЕМА ЗАКАЗА КУХНИ</div>
+            <h1>ВИАЙПИ <span>РЕСТОБАР</span></h1>
+          </div>
+        </div>
+        <div class="topbar-actions">
+          <div class="live-clock" aria-live="off">
+            <span class="clock-dot"></span>
+            <time id="liveClock">—</time>
+          </div>
+          <button class="button button-quiet history-open" id="historyOpen" type="button" aria-label="История заказов">
+            <span class="button-icon" aria-hidden="true">◷</span><span>История заказов</span>
+          </button>
+        </div>
+      </header>
+
+      <main class="workspace">
+        <section class="catalog-area" aria-labelledby="catalogTitle">
+          <div class="intro-row">
+            <div>
+              <p class="eyebrow accent">РАБОЧАЯ СМЕНА</p>
+              <h2 id="catalogTitle">Новый заказ</h2>
+              <p class="muted intro-copy">Выберите товары, укажите количество и отправьте готовое сообщение в чат кухни.</p>
+            </div>
+            <div class="catalog-total"><strong id="productTotal">0</strong><span>товаров<br />в каталоге</span></div>
+          </div>
+
+          <section class="meta-card" aria-label="Данные заказа">
+            <label class="field chef-field">
+              <span>Повар</span>
+              <input id="chefName" type="text" placeholder="Введите имя" autocomplete="off" maxlength="60" aria-label="Имя повара" />
+            </label>
+            <label class="field date-field">
+              <span>Дата поставки</span>
+              <input id="deliveryDate" type="date" />
+            </label>
+            <div class="created-field">
+              <span>Сейчас</span>
+              <strong id="createdAt">—</strong>
+              <small>время оформления заказа</small>
+            </div>
+          </section>
+
+          <div class="catalog-tools">
+            <label class="search-box">
+              <span class="search-icon" aria-hidden="true">⌕</span>
+              <input id="productSearch" type="search" placeholder="Найти товар…" autocomplete="off" />
+              <kbd>⌘ K</kbd>
+            </label>
+            <button class="button button-outline add-product-open" id="addProductOpen" type="button" aria-label="Добавить новый товар">
+              <span class="plus-mark" aria-hidden="true">＋</span><span>Новый товар</span>
+            </button>
+          </div>
+
+          <nav class="category-nav" id="categoryNav" aria-label="Категории товаров"></nav>
+          <div class="custom-tools" id="customTools" hidden>
+            <div class="custom-tools-copy"><strong id="customToolsTitle">Другие товары</strong><span id="customToolsText">Создайте свою группу и добавляйте в неё позиции.</span></div>
+            <div class="custom-tools-actions">
+              <button class="button button-outline" id="addGroupOpen" type="button"><span class="plus-mark" aria-hidden="true">＋</span> Новая группа</button>
+              <button class="button button-danger-outline" id="deleteGroup" type="button" hidden>
+                <svg aria-hidden="true" viewBox="0 0 20 20"><path d="M4.5 6h11M8 6V4.5h4V6m2.5 0-.7 9h-7.6l-.7-9M8 8.5v4.5m4-4.5v4.5" /></svg>
+                Удалить группу
+              </button>
+            </div>
+          </div>
+          <div class="results-line">
+            <span id="resultsLabel">Все товары</span>
+            <span id="selectionLabel">Выбрано: 0</span>
+          </div>
+          <div class="product-grid" id="productGrid"></div>
+          <div class="no-results" id="noResults" hidden>
+            <span class="no-results-icon" aria-hidden="true">⌕</span>
+            <strong id="noResultsTitle">Ничего не найдено</strong>
+            <span id="noResultsText">Измените запрос или добавьте товар в каталог.</span>
+          </div>
+          <div class="local-note"><span aria-hidden="true">●</span> Каталог и история сохраняются в этом браузере. Приложение работает без интернета после первого открытия.</div>
+        </section>
+
+        <aside class="order-panel" id="orderPanel" aria-labelledby="orderTitle">
+          <div class="panel-heading">
+            <div>
+              <p class="eyebrow accent">СОСТАВ ЗАКАЗА</p>
+              <h2 id="orderTitle">На проверку</h2>
+            </div>
+            <button class="icon-button panel-close" id="panelClose" type="button" aria-label="Закрыть заказ">×</button>
+            <span class="item-count" id="itemCount">0</span>
+          </div>
+          <div class="selected-list" id="selectedList"></div>
+          <div class="order-empty" id="orderEmpty">
+            <div class="empty-basket" aria-hidden="true"><span>＋</span></div>
+            <strong>Список пока пуст</strong>
+            <span>Добавьте нужные товары из каталога.</span>
+          </div>
+          <div class="validation-message" id="validationMessage" aria-live="polite"></div>
+          <div class="order-footer">
+            <div class="order-caption"><span>Сообщение</span><span>готово для чата кухни</span></div>
+            <button class="button button-primary button-wide" id="copyOrder" type="button" disabled>
+              <span aria-hidden="true">▣</span> Копировать заказ
+            </button>
+            <button class="button button-secondary button-wide" id="saveOrder" type="button" disabled>
+              <span aria-hidden="true">↓</span> Сохранить в историю
+            </button>
+            <button class="button button-text button-wide" id="clearOrder" type="button" disabled>Очистить список</button>
+          </div>
+          <div class="panel-footnote"><span aria-hidden="true">↗</span> Скопируйте и вставьте сообщение в группу кухни.</div>
+        </aside>
+      </main>
+    </div>
+
+    <div class="mobile-review" id="mobileReview" hidden>
+      <button class="button button-primary mobile-review-button" id="mobileReviewButton" type="button">
+        <span class="mobile-count" id="mobileCount">0</span>
+        <span>Проверить заказ</span>
+        <span class="mobile-arrow" aria-hidden="true">↑</span>
+      </button>
+    </div>
+    <div class="sheet-scrim" id="sheetScrim" hidden></div>
+
+    <dialog class="dialog history-dialog" id="historyDialog">
+      <div class="dialog-header">
+        <div><p class="eyebrow accent">АРХИВ СМЕН</p><h2>История заказов</h2></div>
+        <button class="icon-button dialog-close" data-close-dialog="historyDialog" type="button" aria-label="Закрыть">×</button>
+      </div>
+      <div class="history-toolbar">
+        <label class="search-box history-search"><span class="search-icon" aria-hidden="true">⌕</span><input id="historySearch" type="search" placeholder="Повар, дата или товар…" /></label>
+        <span class="history-count" id="historyCount">0 заказов</span>
+      </div>
+      <div class="history-list" id="historyList"></div>
+      <div class="history-empty" id="historyEmpty" hidden><strong>История пока пуста</strong><span>Сохранённые заказы появятся здесь.</span></div>
+    </dialog>
+
+    <dialog class="dialog add-dialog" id="addProductDialog">
+      <form id="addProductForm" method="dialog">
+        <div class="dialog-header">
+          <div><p class="eyebrow accent">КАТАЛОГ</p><h2>Добавить товар</h2></div>
+          <button class="icon-button dialog-close" data-close-dialog="addProductDialog" type="button" aria-label="Закрыть">×</button>
+        </div>
+        <label class="field"><span>Название товара</span><input id="newProductName" type="text" maxlength="90" placeholder="Например, соус гранатовый" required /></label>
+        <div class="dialog-fields-row">
+          <label class="field"><span>Группа</span><select id="newProductCategory"></select></label>
+          <label class="field"><span>Единица</span><select id="newProductUnit"></select></label>
+        </div>
+        <div class="dialog-actions"><button class="button button-outline" data-close-dialog="addProductDialog" type="button">Отмена</button><button class="button button-primary" type="submit">Добавить в каталог</button></div>
+      </form>
+    </dialog>
+
+    <dialog class="dialog add-dialog" id="addGroupDialog">
+      <form id="addGroupForm" method="dialog">
+        <div class="dialog-header">
+          <div><p class="eyebrow accent">ДРУГИЕ ТОВАРЫ</p><h2>Новая группа</h2></div>
+          <button class="icon-button dialog-close" data-close-dialog="addGroupDialog" type="button" aria-label="Закрыть">×</button>
+        </div>
+        <label class="field"><span>Название группы</span><input id="newGroupName" type="text" maxlength="50" placeholder="Например, напитки" required /></label>
+        <div class="dialog-actions"><button class="button button-outline" data-close-dialog="addGroupDialog" type="button">Отмена</button><button class="button button-primary" type="submit">Создать группу</button></div>
+      </form>
+    </dialog>
+
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+    <script src="app.js" defer></script>
+    <script>if ('serviceWorker' in navigator && location.protocol !== 'file:') window.addEventListener('load', () => navigator.serviceWorker.register('./sw.js').catch(() => {}));</script>
+  </body>
+</html>
